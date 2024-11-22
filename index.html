@@ -1,5 +1,5 @@
-<!DOCTYPE = html>
-<html lang = "pt-br">
+<!DOCTYPE html>
+<html lang="pt-br">
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -11,42 +11,89 @@
         <div class="container mt-5">
             <div class="card" id="profileCard">
                 <div class="card-body text-center">
-                    <img src="https://via.placeholder.com/150" alt="imagem de Perfil" id="profileImage" class="rounded-circle mb-3" style="width: 150px;">
+                    <img src="https://via.placeholder.com/150" alt="imagem de Perfil" id="profileImage" class="rounded-circle mb-3" style="width: 150px; cursor: pointer;" onclick="trocarImagem()">
+                    <input type="file" id="fileInput" style="display: none;" accept="image/*" onchange="atualizarImagem(event)">
                     <h3 id="profileName">Nome: Meu Perfil</h3>
                     <p id="profileAge">Idade: 18</p>
 
                     <h5>Hobbies:</h5>
                     <ul id="hobbiesList" class="list-group mb-3">
-                        <li class="list-group-item">Leitura</li>
-                        <li class="list-group-item">Esportes</li>
-                        <li class="list-group-item">Música</li>
+                        <li class="list-group-item d-flex justify-content-between">
+                            Leitura
+                            <button class="btn btn-danger btn-sm" onclick="excluirHobby(this)">Excluir</button>
+                        </li>
+                        <li class="list-group-item d-flex justify-content-between">
+                            Esportes
+                            <button class="btn btn-danger btn-sm" onclick="excluirHobby(this)">Excluir</button>
+                        </li>
+                        <li class="list-group-item d-flex justify-content-between">
+                            Música
+                            <button class="btn btn-danger btn-sm" onclick="excluirHobby(this)">Excluir</button>
+                        </li>
                     </ul>
                     <button class="btn btn-primary me-2" onclick="alternarNome()">Alterar Nome</button>
                     <button class="btn btn-success me-2" onclick="adicionarHobby()">Adicionar Hobby</button>
-                    <button class="btn btn-warning me-2" onclick="adicionarHobby()">MjudarCorDeFundo</button>
+                    <button class="btn btn-warning me-2" onclick="mudarCorDeFundo()">Mudar Cor de Fundo</button>
                 </div>
             </div>
         </div>
 
         <script>
+            // Função para alterar o nome do perfil
             function alternarNome(){
-                const novoNome=prompt("Digite um novo hobby");
-                if(novoNome){
-                    document.getElementById("profileName").textContent="Nome: "+novoNome;
+                const novoNome = prompt("Digite um novo nome");
+                if (novoNome) {
+                    document.getElementById("profileName").textContent = "Nome: " + novoNome;
                 }
             }
+
+            // Função para adicionar um novo hobby
             function adicionarHobby(){
-                const novoHobby=prompt("Digite um novo Hobby:")
-                if(novoNome) {
-                    document.createElement("li");
-                    li.textContent=novoHobby;
-                    li.className="list-group-item";
+                const novoHobby = prompt("Digite um novo hobby:");
+                if (novoHobby) {
+                    const li = document.createElement("li");
+                    li.className = "list-group-item d-flex justify-content-between";
+                    li.textContent = novoHobby;
+                    const btnExcluir = document.createElement("button");
+                    btnExcluir.className = "btn btn-danger btn-sm";
+                    btnExcluir.textContent = "Excluir";
+                    btnExcluir.onclick = function() { excluirHobby(btnExcluir); };
+                    li.appendChild(btnExcluir);
                     document.getElementById("hobbiesList").appendChild(li);
                 }
             }
+
+            // Função para excluir um hobby
+            function excluirHobby(botao) {
+                const li = botao.parentElement;
+                li.remove();
+            }
+
+            // Função para trocar a imagem do perfil
+            function trocarImagem() {
+                document.getElementById("fileInput").click();
+            }
+
+            // Função para atualizar a imagem do perfil após o upload
+            function atualizarImagem(event) {
+                const file = event.target.files[0];
+                if (file) {
+                    const reader = new FileReader();
+                    reader.onload = function(e) {
+                        document.getElementById("profileImage").src = e.target.result;
+                    };
+                    reader.readAsDataURL(file);
+                }
+            }
+
+            // Função para mudar a cor de fundo do card
             function mudarCorDeFundo() {
-                const cores=["#f8d7da", "#d1ecf1", "#d4edda", "#fff3cd", "#cce5ff"]
+                const cores = ["#f8d7da", "#d1ecf1", "#d4edda", "#fff3cd", "#cce5ff"];
+                const corAleatoria = cores[Math.floor(Math.random() * cores.length)];
+                document.getElementById("profileCard").style.backgroundColor = corAleatoria;
             }
         </script>
+
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     </body>
 </html>
